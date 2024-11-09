@@ -1,10 +1,10 @@
 {
 	"name": "packages",
 	"tree": {
-		"$path": "Packages",
+		"$className": "Folder",
 
 		"jabby": {
-			"$path": "src"
+			"$path": "out"
 		}
 	}
 }

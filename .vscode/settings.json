@@ -10,5 +10,7 @@
 		"**/Thumbs.db": true,
 
 		"Packages": false
-	}
+	},
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"files.eol": "\n"
 }
