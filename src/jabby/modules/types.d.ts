@@ -88,6 +88,7 @@ interface WatchData {
 }
 
 export class World {
+	class_name: "World"
     name: string
     debug: jecs.Entity<string>
     world: jecs.World

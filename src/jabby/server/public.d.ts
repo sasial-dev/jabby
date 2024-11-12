@@ -1,5 +1,7 @@
 import { World } from "../modules/types"
+import SchedulerExports from "./scheduler"
 
-declare const public: World[] & { updated: boolean }
+type Scheduler = typeof SchedulerExports.schedulers[number];
+declare const public: (World | Scheduler)[] & { updated: boolean }
 
 export = public

@@ -1,3 +1,3 @@
 import t from "@rbxts/t"
 
-export = t
+export = t.t

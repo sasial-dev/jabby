@@ -22,7 +22,7 @@ interface JabbyClient {
 		registry: App<BaseAppProps>,
 	},
 
-	spawn_app: () => () => void,
+	spawn_app: (App: App<undefined>) => () => void,
 	unmount_all: () => void    
 }
 
