@@ -1,4 +1,4 @@
-local jecs = require(script.Parent.Parent.Parent.Parent.jecs)
+local ecr = require(script.Parent.Parent.Parent.Parent.ecr)
 local queue = require(script.Parent.Parent.Parent.modules.queue)
 local remotes = require(script.Parent.Parent.Parent.modules.remotes)
 local reverse_connector = require(script.Parent.Parent.Parent.modules.reverse_connector)
@@ -6,13 +6,13 @@ local traffic_check = require(script.Parent.Parent.Parent.modules.traffic_check)
 local types = require(script.Parent.Parent.Parent.modules.types)
 local public = require(script.Parent.Parent.public)
 
-local function obtain_string(entity: jecs.Entity<any>, world: jecs.World, name: jecs.Entity<string>)
+local function obtain_string(entity: ecr.entity, world: ecr.Registry, components: { [any]: string })
 	local MAX_SIZE = 750
 	local has_more = false
 	local n = #`id: {entity}`
 	local strings = {`id: {entity}`}
 
-	for id, name in world:query(name):iter() do
+	for id, name in components do
 		if not world:has(entity, id) then continue end
 		local v = world:get(entity, id)
 		local str
@@ -115,7 +115,7 @@ return function()
 				continue
 			end
 
-			local str = obtain_string(entity, world, jecs.Name)
+			local str = obtain_string(entity, world, world_data.components)
 
 			remotes.send_mouse_entity:fire(
 				outgoing,
