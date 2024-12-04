@@ -145,7 +145,6 @@ export declare class Scheduler {
 export class World {
 	class_name: "World"
     name: string
-    debug: jecs.Entity<string>
     world: jecs.World
 
     entities: Map<Instance, jecs.Entity>
