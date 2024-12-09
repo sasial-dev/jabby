@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/jabby",
-  "version": "0.2.0-rc.6",
+  "version": "0.2.0-rc.7",
   "description": "",
   "main": "out/init.lua",
   "scripts": {
@@ -25,7 +25,7 @@
   "dependencies": {
     "@rbxts/pebble": "0.1.0-rc.9",
     "@rbxts/t": "3.1.1",
-    "@rbxts/vide": "0.5.1"
+    "@rbxts/vide": "^0.5.2"
   },
   "devDependencies": {
     "@rbxts/compiler-types": "3.0.0-types.0",
