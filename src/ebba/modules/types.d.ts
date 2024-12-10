@@ -1,4 +1,4 @@
-import jecs from "@rbxts/jecs"
+import { Entity, Registry } from "@rbxts/ecr"
 
 type host = "client" | "server"
 
@@ -54,10 +54,10 @@ export interface SystemData {
 type ChangeTypes = "remove" | "clear" | "delete" | "add" | "set" | "entity" | "component"
 export interface WatchLoggedChanges {
 	types: ChangeTypes[],
-	entities: jecs.Entity[],
-	component: jecs.Entity[],
+	entities: Entity[],
+	component: Entity[],
 	values: string[],
-	worlds: jecs.World[]
+	worlds: Registry[]
 }
 
 export interface SystemWatch {
@@ -145,9 +145,8 @@ export declare class Scheduler {
 export class World {
 	class_name: "World"
     name: string
-    debug: jecs.Entity<string>
-    world: jecs.World
+    world: Registry
 
-    entities: Map<Instance, jecs.Entity>
-    get_entity_from_part?: (part: BasePart) => LuaTuple<[jecs.Entity | undefined, BasePart | undefined]>
+    entities: Map<Instance, Entity>
+    get_entity_from_part?: (part: BasePart) => LuaTuple<[Entity | undefined, BasePart | undefined]>
 }

@@ -1,6 +1,6 @@
 {
-  "name": "@rbxts/jabby",
-  "version": "0.2.0-rc.5",
+  "name": "@rbxts/ebba",
+  "version": "0.2.0-rc.1",
   "description": "",
   "main": "out/init.lua",
   "scripts": {
@@ -20,16 +20,16 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@rbxts/jecs": "~0.4.1 || 0.4.1-rc.0"
+    "@rbxts/ecr": "^0.8.0-ts.2"
   },
   "dependencies": {
-    "@rbxts/pebble": "0.1.0-rc.8",
+    "@rbxts/pebble": "0.1.0-rc.9",
     "@rbxts/t": "3.1.1",
-    "@rbxts/vide": "0.5.1"
+    "@rbxts/vide": "^0.5.1"
   },
   "devDependencies": {
     "@rbxts/compiler-types": "3.0.0-types.0",
-    "@rbxts/jecs": "0.4.1-rc.0",
+    "@rbxts/ecr": "^0.8.0-ts.2",
     "@rbxts/types": "^1.0.813",
     "roblox-ts": "3.0.0",
     "typescript": "5.5.3"

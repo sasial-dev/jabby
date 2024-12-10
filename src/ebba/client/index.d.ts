@@ -14,7 +14,7 @@ interface Entity extends BaseAppProps {
 	entity: number,
 }
 
-interface JabbyClient {
+interface EbbaClient {
     apps: {
 		home: App<undefined>,
 		entity: App<Entity>,
@@ -26,5 +26,5 @@ interface JabbyClient {
 	unmount_all: () => void    
 }
 
-declare const client: JabbyClient
+declare const client: EbbaClient
 export = client

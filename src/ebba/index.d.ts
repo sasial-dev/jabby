@@ -1,4 +1,4 @@
-interface Jabby {
+interface Ebba {
     set_check_function: (callback: (player: Player) => boolean) => void
     obtain_client: () => typeof import("./client")
     
@@ -9,5 +9,5 @@ interface Jabby {
     broadcast_server: typeof import("./server")["broadcast"]
 }
 
-declare const jabby: Jabby
-export = jabby
+declare const ebba: Ebba
+export = ebba

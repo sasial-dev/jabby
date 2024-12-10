@@ -1,4 +1,4 @@
-import "./jecs"
+import "./ecr"
 import "./t"
 import "./vide"
 
@@ -6,6 +6,6 @@ if (game.GetService("RunService").IsClient()) {
     import("./pebble").expect()
 }
 
-import jabby from "./jabby"
+import ebba from "./ebba"
 
-export = jabby
+export = ebba
