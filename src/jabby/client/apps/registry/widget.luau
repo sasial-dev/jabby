@@ -35,7 +35,7 @@ type props = {
 
 	enable_pick: vide.Source<boolean>,
 	entity_hovering_over: () -> string,
-	hovering_over: () -> number,
+	hovering_over: () -> BasePart,
 
 	columns: () -> {{any}},
 
@@ -371,6 +371,7 @@ return function(props: props)
 				
 				pebble.tablesheet {
 					size = UDim2.fromScale(1, 1),
+					suggested_column_sizes = { 0.1 },
 
 					column_sizes = function()
 						local t = {}
