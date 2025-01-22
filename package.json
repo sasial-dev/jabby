@@ -20,7 +20,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@rbxts/jecs": "^0.5.1"
+    "@rbxts/jecs": "^0.5.3"
   },
   "dependencies": {
     "@rbxts/pebble": "0.1.0-rc.11",
