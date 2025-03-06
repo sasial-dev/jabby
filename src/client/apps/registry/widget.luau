@@ -35,7 +35,7 @@ type props = {
 
 	enable_pick: vide.Source<boolean>,
 	entity_hovering_over: () -> string,
-	hovering_over: () -> number,
+	hovering_over: () -> BasePart,
 
 	columns: () -> {{any}},
 
@@ -94,6 +94,7 @@ return function(props: props)
 			BackgroundTransparency = 1,
 
 			tooltip {
+				transparency = 0.3,
 				visible = function()
 					return props.entity_hovering_over() and #props.entity_hovering_over() > 0 or false
 				end,
@@ -105,7 +106,15 @@ return function(props: props)
 						return props.entity_hovering_over() or ""
 					end,
 					xalignment = Enum.TextXAlignment.Left,
-					wrapped = true
+					wrapped = true,
+					code = true,
+					
+					{ RichText = true },
+
+					create "UIStroke" {
+						Thickness = 1,
+						Color = pebble.theme.bg[-5]
+					}
 				}
 			},
 
@@ -371,6 +380,7 @@ return function(props: props)
 				
 				pebble.tablesheet {
 					size = UDim2.fromScale(1, 1),
+					suggested_column_sizes = { 0.1 },
 
 					column_sizes = function()
 						local t = {}

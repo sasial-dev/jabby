@@ -1,13 +1,12 @@
 [package]
 name = "alicesaidhi/ebba"
 description = "ECR debugger built with Vide (jabby port)"
-version = "0.2.0-rc.1"
+version = "0.2.0-rc.9"
 registry = "https://github.com/UpliftGames/wally-index"
-exclude = ["out", ".vscode", "aftman.toml", ".luaurc", "test.project.json", "todo.md"]
+exclude = ["out", ".vscode", "aftman.toml", ".luaurc", "test.project.json", "todo.md", "docs"]
 realm = "shared"
 
 [dependencies]
-pebble = "alicesaidhi/pebble@0.1.0-rc.9"
+pebble = "alicesaidhi/pebble@0.1.1"
 vide = "centau/vide@0.3.1"
 ecr = "centau/ecr@0.8.0"
-t = "corecii/greentea@0.4.7"
