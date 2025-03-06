@@ -9,3 +9,7 @@ node_modules
 /out
 
 /wally.lock
+
+# Documentation
+/docs/node_modules/
+/docs/.vitepress/cache

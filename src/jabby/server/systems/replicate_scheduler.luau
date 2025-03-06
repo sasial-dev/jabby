@@ -7,7 +7,6 @@ local traffic_check = require(script.Parent.Parent.Parent.modules.traffic_check)
 local types = require(script.Parent.Parent.Parent.modules.types)
 local public = require(script.Parent.Parent.public)
 
-
 return function()
 
 	local connected = {}
@@ -29,6 +28,7 @@ return function()
 			local outgoing = reverse_connector(incoming)
 			connected[id] = connected[id] or {}
 			table.insert(connected[id], outgoing)
+			print("connected")
 			
 			for system_id, data in scheduler.system_data do
 				remotes.scheduler_system_static_update:fire(outgoing, id, system_id, data)
@@ -45,10 +45,15 @@ return function()
 			if not traffic_check.check_no_wl(incoming.host) then continue end
 
 			if not connected[id] then continue end
-			for idx, connector in connected[id] do
+
+			local scheduler_connected = connected[id]
+
+			for i = #scheduler_connected, 1, -1 do
+				local connector = scheduler_connected[i]
 				if connector.host ~= incoming.host then continue end
 				if connector.to_vm ~= incoming.from_vm then continue end
-				table.remove(connector, idx)
+				scheduler_connected[i] = scheduler_connected[#scheduler_connected]
+				scheduler_connected[#scheduler_connected] = nil
 				break
 			end
 		end
@@ -66,9 +71,10 @@ return function()
 
 		for id, connected in connected do
 			local scheduler: types.Scheduler = public[id]
+			if #connected == 0 then continue end
 			
-			local map = {}
 			for system_id in scheduler.system_data_updated do
+				local map = {}
 				local data = scheduler.system_data[system_id]
 
 				for _, connector in connected do
@@ -76,6 +82,8 @@ return function()
 					map[hash(connector)] = true
 					remotes.scheduler_system_static_update:fire(connector, id, system_id, data)
 				end
+				
+				scheduler.system_data_updated[system_id] = nil
 			end
 
 			for system_id, frames in scheduler.system_frames_updated do

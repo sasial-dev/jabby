@@ -9,7 +9,6 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-local t = require(script.Parent.Parent.Parent.t)
 local signal = require(script.Parent.signal)
 local vm_id = require(script.Parent.vm_id)
 local traffic_check = require(script.Parent.traffic_check)
@@ -24,17 +23,30 @@ else
 	local_host = Players.LocalPlayer
 end
 
-local tincoming_connector = t.strictInterface({
-	host = t.union(t.literal("server"), t.Instance),
-	from_vm = t.integer,
-	to_vm = t.optional(t.integer),
-})
+local function tincoming_connector(t: any): boolean
+	if typeof(t) ~= "table" then return false end
+	if not (t.host == "server" or (typeof(t.host) == "Instance" and t.host:IsA("Player"))) then return false end
+	if typeof(t.from_vm) ~= "number" then return false end
+	if t.to_vm ~= nil and typeof(t.to_vm) ~= "number" then return false end
+
+	return true
+end
 
 local NAME = "JABBY_REMOTES"
-local folder = if RunService:IsServer() then Instance.new("Folder") else ReplicatedStorage:WaitForChild(NAME)
-folder.Name = NAME
-folder.Archivable = false
-folder.Parent = ReplicatedStorage
+local folder: Instance
+if RunService:IsServer() then
+	local existing = ReplicatedStorage:FindFirstChild(NAME)
+	if existing then
+		folder = existing
+	else
+		folder = Instance.new("Folder")
+		folder.Name = NAME
+		folder.Archivable = false
+		folder.Parent = ReplicatedStorage
+	end
+else
+	folder = ReplicatedStorage:WaitForChild(NAME)
+end
 
 local function get_remote_event(name: string, unreliable: boolean?): RemoteEvent & { actor: BindableEvent, peer: RemoteEvent }
 	if RunService:IsServer() then
@@ -68,11 +80,9 @@ local function create_event<T...>(name: string, unreliable: boolean?, do_not_blo
 
 		fire = function(_, connector: types.OutgoingConnector, ...)
 			--- if the host is within this vm, we can fire it straight to
-			if not traffic_check.check(local_host, connector.host, true) then
-				-- print("cancel fire!", remote.Name)
-				return
-			end
+			if not traffic_check.check(local_host, connector.host, true) then return end
 			
+			-- same host, same vm.
 			if
 				connector.host == local_host
 				and connector.to_vm == vm_id
@@ -138,7 +148,6 @@ local function create_event<T...>(name: string, unreliable: boolean?, do_not_blo
 		remote.OnServerEvent:Connect(function(player, target: types.IncomingConnector, ...)
 			--- check if the player is allowed to send this
 			if not do_not_block_traffic and not traffic_check.check(player, target.host) then
-				print("cancel!", remote.Name)
 				return
 			end
 
@@ -169,7 +178,7 @@ local function create_event<T...>(name: string, unreliable: boolean?, do_not_blo
 		end)
 	end
 
-	remote.actor.Event:Connect(function(incoming: types.IncomingConnector, ...)
+	remote:WaitForChild("actor").Event:Connect(function(incoming: types.IncomingConnector, ...)
 		if incoming.to_vm ~= vm_id and incoming.to_vm ~= nil then return end
 		fire(incoming, ...)
 	end)

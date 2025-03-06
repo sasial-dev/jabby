@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.2.1 - 2025-02-28
+
+### Fixed
+
+- Fix a resource leak within the scheduler widget
+
+## 0.2.0 - 2025-02-25
 
 ### Added
 
@@ -33,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix type for `jabby.set_check_function`
 - Fix parsing for entity pointers
 - Fix tags and nil values appearing as userdata in the query widget
+- Fix entity highlighting erroring when an entity has a tag
+- Fix systems not updating their state properly on the server
 - Query view should work jecs 0.3.0
 
 ### Removed
