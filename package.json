@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/ebba",
-  "version": "0.2.0-rc.1",
+  "version": "0.2.3",
   "description": "",
   "main": "out/init.lua",
   "scripts": {
@@ -23,8 +23,7 @@
     "@rbxts/ecr": "^0.8.0-ts.2"
   },
   "dependencies": {
-    "@rbxts/pebble": "0.1.0-rc.9",
-    "@rbxts/t": "3.1.1",
+    "@rbxts/pebble": "0.1.2",
     "@rbxts/vide": "^0.5.1"
   },
   "devDependencies": {

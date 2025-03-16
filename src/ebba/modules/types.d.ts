@@ -94,41 +94,6 @@ export interface ProcessingFrame {
 export declare class Scheduler {
     name: string
 
-    /**
-     * contains a map of valid system ids
-     */
-    valid_system_ids: Set<SystemId>
-
-    /**
-     * contains a list of static system data that is updated infrequently
-     */
-    system_data: Map<SystemId, SystemData>
-
-    /**
-     * list of system data that has updated
-     */
-    system_data_updated: Set<SystemId>
-
-    /**
-     * contains a buffer of the last couple frames of system data that is refreshed constantly
-     */
-    system_frames: Map<SystemId, SystemFrame[]>
-
-    /**
-     * stores the frames that have been updated
-     */
-    system_frames_updated: Map<SystemId, Set<SystemFrame>>
-
-    /**
-     * contains the current frame that a system is processing
-     */
-    processing_frame: Map<SystemId, ProcessingFrame>
-
-    /**
-     * contains a list of watches for each system
-     */
-    system_watches: Map<SystemId, { active: boolean, watch: SystemWatch }[]>
-
     register_system(settings?: SystemSettingData): SystemId
     set_system_data(id: SystemId, settings: SystemSettingData): void
     get_system_data(id: SystemId): SystemData

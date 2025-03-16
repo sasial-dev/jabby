@@ -195,7 +195,7 @@ return function()
 			for name, new_value in new_values do
 				local old_value = old_values[name]
 
-				if old_value == new_value then continue end
+				if old_value == new_value and typeof(new_value) ~= "table" then continue end
 				remotes.inspect_entity_update:fire(
 					inspector_data.outgoing,
 					inspect_id,
@@ -203,7 +203,7 @@ return function()
 					if new_value == TAG then "tag"
 					--todo: figure out a better way to say that you are not allowed to store nil in a component
 					elseif new_value == BAD_VALUE then "nil (not allowed)"
-					else lon.output(new_value, false)
+					else lon.output(new_value, true)
 				)
 			end
 

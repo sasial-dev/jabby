@@ -1,5 +1,4 @@
 import "./ecr"
-import "./t"
 import "./vide"
 
 if (game.GetService("RunService").IsClient()) {

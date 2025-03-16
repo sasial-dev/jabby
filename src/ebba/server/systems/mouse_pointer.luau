@@ -6,45 +6,84 @@ local traffic_check = require(script.Parent.Parent.Parent.modules.traffic_check)
 local types = require(script.Parent.Parent.Parent.modules.types)
 local public = require(script.Parent.Parent.public)
 
+local function get_type(t: { [any]: any }): string
+	local key, value = next(t)
+	if key == nil then return "" end
+	return `[{typeof(key)}]: {typeof(value)}`
+end
+
+local function get_string_keys(t: { [any]: any }): ({ string }, boolean)
+	local keys = {}
+	local i = 0
+	for key in t do
+		if i > 3 then return keys, true end
+		if typeof(key) ~= "string" then continue end
+		table.insert(keys, key)
+		i += 1
+	end
+	return keys, false
+end
+
 local function obtain_string(entity: ecr.entity, world: ecr.Registry, components: { [any]: string })
+	local names = {}
+	for value, key in components do
+		names[key] = value
+	end
+
 	local MAX_SIZE = 750
 	local has_more = false
-	local n = #`id: {entity}`
-	local strings = {`id: {entity}`}
+	local strings = {`<b>#{entity}</b>\n`}
+	local n = #strings[1]
 
 	for id, name in components do
-		if not world:has(entity, id) then continue end
-		local v = world:get(entity, id)
-		local str
+		if world:has(entity, id) == false then continue end
+		local value = world:get(entity, id)
+		local to_append
 
-		if typeof(v) == "string" then
-			str = `"{v}"`
-		elseif typeof(v) == "table" then
-			local temp_n = 0
-			local temp_b = {}
+		if typeof(value) == "table" then
+			local string_keys = get_string_keys(value)
 
-			for key, value in v do
-				if #temp_b > 0 then
-					table.insert(temp_b, "; ")
+			if #string_keys > 0 then
+				local temp_b = {`<b>{name}</b>:`}
+				local temp_n = #temp_b[1]
+
+				for key, value in pairs(value) do
+					if #temp_b > 0 then
+						table.insert(temp_b, "\n")
+					end
+
+					local str_of_v = if type(value) == "string" then `{value}`
+						elseif typeof(value) == "table" then get_type(value)
+						else tostring(value)
+					if #str_of_v > 32 then
+						str_of_v = `{string.sub(str_of_v, 1, 30)}..`
+					end
+
+					local str = `{key}: {str_of_v}`
+
+					if temp_n + #str + 2 > 32 then
+						table.insert(temp_b, "...")
+						break
+					else
+						table.insert(temp_b, str)
+					end
 				end
 
-				local str_of_v = if type(value) == "string" then `"{value}"` else tostring(value)
-				local str = `{key}: {str_of_v}`
-
-				if temp_n + #str + 2 > 100 then
-					table.insert(temp_b, "...")
-					break
-				else
-					table.insert(temp_b, str)
-				end
+				to_append = `{table.concat(temp_b)}`
+			else
+				to_append = `<b>{name}</b>: {get_type(value)}`
 			end
-
-			str = `\{{table.concat(temp_b)}\}`
+		elseif value == nil then
+			to_append = `<b>{name}</b>`
 		else
-			str = tostring(v)
+			local value = tostring(value)
+			if #value > 32 then
+				to_append = `<b>{name}</b>: {string.sub(value, 1, 30)}..`
+			else
+				to_append = `<b>{name}</b>: {value}`
+			end
 		end
-
-		local to_append = `\n{name}: {str}`
+		
 		if MAX_SIZE > n + #to_append then
 			n += #to_append
 			table.insert(strings, to_append)
@@ -53,8 +92,8 @@ local function obtain_string(entity: ecr.entity, world: ecr.Registry, components
 		end
 	end
 
-	local str = table.concat(strings)
-	if has_more then str = str .. "\n..." end
+	local str = table.concat(strings, "\n")
+	if has_more then str = str .. "..." end
 
 	return str
 end
@@ -67,12 +106,11 @@ return function()
 
 		for incoming, world_id, pos, dir in send_mouse_pointer:iter() do
 			if not traffic_check.check_no_wl(incoming.host) then continue end
-			
 			local world_data: types.World = public[world_id]
 			local world = world_data.world
 			local outgoing = reverse_connector(incoming)
 
-			if world_data.entities == nil then continue end
+			if world_data.entities == nil and world_data.get_entity_from_part == nil then continue end
 			if not world_data or world_data.class_name ~= "World" then continue end
 
 			local result = workspace:Raycast(pos, dir * 1000)
