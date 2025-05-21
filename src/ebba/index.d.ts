@@ -1,4 +1,4 @@
-import type { Entity, Registry } from "@rbxts/ecr"
+import type { Component, Entity, Registry } from "@rbxts/ecr"
 import { Scheduler } from "./modules/types"
 
 interface Applet<T> {
@@ -7,6 +7,7 @@ interface Applet<T> {
 
 interface WorldConfig {
     world: Registry,
+    components: Map<Component, string>
     entities?: Map<Instance, Entity>,
     get_entity_from_part?: ((part: BasePart) => LuaTuple<[Entity, Part]>)
 }
