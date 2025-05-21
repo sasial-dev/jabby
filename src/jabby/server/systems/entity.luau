@@ -219,8 +219,7 @@ return function()
 			local components = get_all_components(world, entity)
 
 			local function is_tag(id: jecs.Entity<any>)
-				return if IS_PAIR(id) then not world:has(jecs.pair_first(world, id), jecs.Component)
-					else not world:has(id, jecs.Component)
+				return jecs.is_tag(world, id)
 
 			end
 
@@ -239,7 +238,7 @@ return function()
 			for name, new_value in new_values do
 				local old_value = old_values[name]
 
-				if old_value == new_value then continue end
+				if old_value == new_value and typeof(new_value) ~= "table" then continue end
 				remotes.inspect_entity_update:fire(
 					inspector_data.outgoing,
 					inspect_id,
