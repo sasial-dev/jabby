@@ -8,7 +8,7 @@ interface Applet<T> {
 interface WorldConfig {
     world: World,
     entities?: Map<Instance, Entity>,
-    get_entity_from_part?: ((part: BasePart) => LuaTuple<[Entity, Part]>)
+    get_entity_from_part?: ((part: BasePart) => LuaTuple<[Entity, PVInstance]> | undefined)
 }
 
 interface SchedulerConfig {
